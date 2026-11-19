@@ -52,18 +52,6 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: Build Signed Release APK (when signing secrets configured)
-        if: ${{ secrets.SIGNING_KEYSTORE_BASE64 != '' }}
-        working-directory: android
-        env:
-          KEYSTORE_PATH: ${{ runner.temp }}/release-keystore.jks
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          echo "${{ secrets.SIGNING_KEYSTORE_BASE64 }}" | base64 --decode > "$KEYSTORE_PATH"
-          ./gradlew assembleRelease --stacktrace
-
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
