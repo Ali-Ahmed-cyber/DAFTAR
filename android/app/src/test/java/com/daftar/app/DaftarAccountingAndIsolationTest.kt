@@ -1,5 +1,6 @@
 package com.daftar.app
 
+import android.app.Application
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.daftar.app.core.backup.BackupCryptoEngine
@@ -36,7 +37,7 @@ import java.io.ByteArrayOutputStream
 import java.math.BigDecimal
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = Application::class)
 class DaftarAccountingAndIsolationTest {
 
     private lateinit var context: Context
