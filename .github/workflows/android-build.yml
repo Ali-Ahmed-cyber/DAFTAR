@@ -1,0 +1,79 @@
+name: Android Build, Tests & APK (DAFTAR)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Test & Build DAFTAR APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle & cache
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-root-directory: android
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Verify Zero INTERNET Permission in Manifest
+        run: |
+          if grep -q "android.permission.INTERNET" android/app/src/main/AndroidManifest.xml; then
+            echo "ERROR: Forbidden INTERNET permission found in AndroidManifest.xml"
+            exit 1
+          fi
+
+      - name: Run Unit & Accounting Verification Tests
+        working-directory: android
+        run: ./gradlew testDebugUnitTest --stacktrace
+
+      - name: Run Android Lint
+        working-directory: android
+        run: ./gradlew lintDebug --stacktrace
+
+      - name: Build Debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Build Signed Release APK (when signing secrets configured)
+        if: ${{ secrets.SIGNING_KEYSTORE_BASE64 != '' }}
+        working-directory: android
+        env:
+          KEYSTORE_PATH: ${{ runner.temp }}/release-keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "${{ secrets.SIGNING_KEYSTORE_BASE64 }}" | base64 --decode > "$KEYSTORE_PATH"
+          ./gradlew assembleRelease --stacktrace
+
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: daftar-debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload Unit Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daftar-unit-test-results
+          path: android/app/build/reports/tests/testDebugUnitTest/

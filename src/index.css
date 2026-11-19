@@ -1,0 +1,47 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-display: 'Cairo', sans-serif;
+    --font-body: 'IBM Plex Sans Arabic', 'Cairo', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-mono-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle custom scrollbar for screen prototype & lists */
+.daftar-scroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.daftar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.daftar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+}
+
+.daftar-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 157, 66, 0.6);
+}

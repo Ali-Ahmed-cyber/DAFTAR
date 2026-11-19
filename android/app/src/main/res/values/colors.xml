@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="navy_primary">#0B192C</color>
+    <color name="navy_elevated">#162A45</color>
+    <color name="gold_accent">#C89D42</color>
+    <color name="gold_light">#D9B15B</color>
+    <color name="profit_emerald">#15803D</color>
+    <color name="alert_crimson">#DC2626</color>
+    <color name="canvas_light">#F8FAFC</color>
+    <color name="canvas_dark">#08111E</color>
+</resources>

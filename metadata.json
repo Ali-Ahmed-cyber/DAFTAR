@@ -1,0 +1,6 @@
+{
+  "name": "دفتر — المحاسب الذكي | DAFTAR",
+  "description": "المرحلة الأولى: الهوية البصرية ونظام التصميم وخريطة التنقل ونموذج الشاشات التفاعلي لنظام المحاسبة الذكي دفتر (Android Jetpack Compose Offline-First).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
