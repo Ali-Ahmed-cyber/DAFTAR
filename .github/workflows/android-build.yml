@@ -29,8 +29,6 @@ jobs:
 
       - name: Setup Gradle & cache
         uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-root-directory: android
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
